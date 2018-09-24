@@ -1,8 +1,12 @@
 import torch
+from gym.spaces import Box, Discrete
 
 
-def torchify(y):
-    return torch.tensor(y).type(torch.FloatTensor)
+def torchify(y, type=Box):
+    if type is Box:
+        return torch.Tensor(y).type(torch.FloatTensor)
+    elif type is Discrete:
+        return torch.Tensor(y).type(torch.LongTensor)
 
 
 def make_indicator(y_tensor, n_dim=None):

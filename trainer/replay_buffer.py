@@ -6,7 +6,7 @@ class ReplayBuffer:
     def get_cumulative_rewards(rewards, discount):
         return scipy.signal.lfilter([1.], [1., -discount], rewards[::-1])[::-1]
 
-    def __init__(self, buffer_length=1):
+    def __init__(self, buffer_length):
         self.idx, self.buffer_length = 0, buffer_length
         self.trace_list_by_iter = [None for _ in range(self.buffer_length)]
 
