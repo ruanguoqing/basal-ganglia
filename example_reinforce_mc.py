@@ -1,17 +1,16 @@
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
+import torch.optim as optim
 
 from trainer.training_loop import *
 
 
 hype = {'Environment Name': 'CartPole-v0',
-        'Learning Algorithm': 'Reinforce with Advantages',
+        'Learning Algorithm': 'Reinforce with MC',
         'Policy Network': {'Hidden Layer Width': 128},
-        'Value Network': {'Hidden Layer Width': 128},
         'Buffer': {'Buffer Length': 1},
-        'Policy Optimizer': {'Learning Rate': 1e-3},
-        'Value Optimizer': {'Learning Rate': 1e-3},
+        'Policy Optimizer': {'Algorithm': optim.Adam, 'Learning Rate': 1e-3},
         'Episodes per Step': 1,
         'Number of Steps': 10000,
         'Regularization Parameter': 0.1,

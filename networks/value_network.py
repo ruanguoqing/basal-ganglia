@@ -15,11 +15,14 @@ class ValueNetwork(nn.Module):
         else:
             raise NotImplementedError
 
+        self.fc_layer = nn.Linear(hidden_layer_width, hidden_layer_width)
         self.output_layer = nn.Linear(hidden_layer_width, 1)
 
     def forward(self, s, a=None):
         x = self.input_layer(s)
-        x = F.relu(x)
+        x = torch.tanh(x)
+        x = self.fc_layer(x)
+        x = torch.tanh(x)
         x = self.output_layer(x)
         x = x.squeeze(dim=-1)
         return x

@@ -8,7 +8,8 @@ def reinforce_mc_step(policy_network, trace_summary, reg, opt):
     a_list = torchify(trace_summary[1], type(policy_network.action_space))
     cum_r_list = torchify(trace_summary[3])
 
-    _, logp_list, ent_list = policy_network(s_list, a_list)
+    d_list = policy_network(s_list)
+    logp_list, ent_list = d_list.log_prob(a_list), d_list.entropy()
 
     value_policy = torch.mean(cum_r_list * logp_list)
     entropy = torch.mean(ent_list)
@@ -25,9 +26,11 @@ def reinforce_adv_step(policy_network, value_network, trace_summary, reg, opt_po
     cum_r_list = torchify(trace_summary[3])
 
     val_list = value_network(s_list)
-    _, logp_list, ent_list = policy_network(s_list, a_list)
-
     cost_value = F.mse_loss(val_list, cum_r_list)
+
+    d_list = policy_network(s_list)
+    logp_list, ent_list = d_list.log_prob(a_list), d_list.entropy()
+
     value_policy = torch.mean((cum_r_list-val_list) * logp_list)
     entropy = torch.mean(ent_list)
     cost_policy = - value_policy - reg * entropy

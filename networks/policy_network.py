@@ -16,6 +16,8 @@ class PolicyNetwork(nn.Module):
         else:
             raise NotImplementedError
 
+        self.fc_layer = nn.Linear(hidden_layer_width, hidden_layer_width)
+
         if type(self.action_space) is Discrete:
             self.logit = nn.Linear(hidden_layer_width, self.action_space.n)
         elif type(self.action_space) is Box:
@@ -26,23 +28,27 @@ class PolicyNetwork(nn.Module):
         else:
             raise NotImplementedError
 
-    def forward(self, s, a=None):
+    def forward(self, s, detach=False):
         x = self.input_layer(s)
-        x = F.relu(x)
+        x = torch.tanh(x)
+        x = self.fc_layer(x)
+        x = torch.tanh(x)
 
         if type(self.action_space) is Discrete:
             p = self.logit(x)
+            if detach:
+                p = p.detach()
             d = D.Categorical(logits=p)
-            a = d.sample() if a is None else a
-            return a, d.log_prob(a), d.entropy()
+            return d
         elif type(self.action_space) is Box:
             mu = self.mean(x)
-            std = torch.exp(self.log_sigma)#+self.min_log_sigma   # do softplus?
-            d = D.MultivariateNormal(mu, torch.diag(std))
-            a = d.sample() if a is None else a
-            return a, d.log_prob(a), d.entropy()
+            sigma = torch.exp(self.log_sigma)   # do softplus?
+            if detach:
+                mu, sigma = mu.detach(), sigma.detach()
+            d = D.MultivariateNormal(mu, torch.diag(sigma))
+            return d
 
     def policy(self, s):
         state = torchify([s], type(self.state_space))
-        action, _, _ = self.forward(state, a=None)
+        action = self.forward(state).sample()
         return action.numpy()[0]
