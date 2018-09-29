@@ -1,6 +1,6 @@
 import torch.nn.functional as F
 
-from util.torch_util import *
+from reinforce.util.torch_util import *
 
 
 def reinforce_mc_step(policy_network, trace_summary, reg, opt):

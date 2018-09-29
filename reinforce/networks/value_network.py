@@ -1,6 +1,6 @@
 import torch.nn as nn, torch.nn.functional as F
 
-from util.torch_util import *
+from reinforce.util.torch_util import *
 
 
 class ValueNetwork(nn.Module):

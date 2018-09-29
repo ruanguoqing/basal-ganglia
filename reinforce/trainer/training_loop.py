@@ -1,11 +1,11 @@
 import torch.optim as optim
 
-from util.game import *
-from trainer.replay_buffer import *
-from networks.policy_network import *
-from networks.value_network import *
-from learner.reinforce import *
-from learner.natural_grad import *
+from reinforce.util.game import *
+from reinforce.trainer.replay_buffer import *
+from reinforce.networks.policy_network import *
+from reinforce.networks.value_network import *
+from reinforce.learner.reinforce import *
+from reinforce.learner.natural_grad import *
 
 
 def learn(hype):

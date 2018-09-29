@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import torch.optim as optim
 
-from trainer.training_loop import *
+from reinforce.trainer.training_loop import *
 
 
 hype = {'Environment Name': 'Swimmer-v2',

@@ -1,6 +1,6 @@
 import torch.nn.functional as F, torch.distributions as D, torch.autograd as A
 
-from util.torch_util import *
+from reinforce.util.torch_util import *
 
 
 def npg_adv_step(policy_network, value_network, trace_summary, reg, opt_policy, opt_value):
