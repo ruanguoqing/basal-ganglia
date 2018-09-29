@@ -1,6 +1,6 @@
 import torch.nn as nn, torch.nn.functional as F, torch.distributions as D, torch.nn.init as init
 
-from reinforce.util.torch_util import *
+from basalganglia.reinforce.util.torch_util import *
 
 
 class PolicyNetwork(nn.Module):
